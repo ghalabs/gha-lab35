@@ -1,0 +1,25 @@
+name: Academia Synapse Dependencies Check
+
+on: [push]
+
+jobs:
+  dependency-audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install Sync Action Deps
+        run: npm install
+        working-directory: .github/actions/dependency-sync
+
+      - name: Run Dependency Sync Check
+        run: node .github/actions/dependency-sync/index.js
+        env:
+          INPUT_LIBRARY_NAME: 'axios'

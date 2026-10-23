@@ -1,0 +1,12 @@
+name: 'Synapse Dependency Sync'
+description: 'Ensures frontend and backend share the same library versions'
+
+inputs:
+  library_name:
+    description: 'The npm package name to check (e.g., axios)'
+    required: true
+    default: 'axios'
+
+runs:
+  using: 'node24'
+  main: 'index.js'
