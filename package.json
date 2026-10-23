@@ -1,0 +1,20 @@
+{
+  "name": "academia-synapse-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "pm2 start backend/src/app.js --name academia-api && pm2 start npm --name academia-ui -- start --prefix frontend",
+    "stop": "pm2 delete academia-api academia-ui",
+    "status": "pm2 list",
+    "logs": "pm2 logs",
+    "test-backend": "npm test --prefix backend -- --silent",
+    "test-frontend": "npm test --prefix frontend -- --silent",
+    "test-all": "npm run test-backend && npm run test-frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "pm2": "^6.0.14"
+  }
+}
