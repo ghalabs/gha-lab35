@@ -20,6 +20,6 @@ jobs:
         working-directory: .github/actions/dependency-sync
 
       - name: Run Dependency Sync Check
-        run: node .github/actions/dependency-sync/index.js
+        uses: node .github/actions/dependency-sync/index.js
         env:
           INPUT_LIBRARY_NAME: 'axios'
