@@ -1,6 +1,7 @@
 const core = require('@actions/core');
 const fs = require('fs');
 const path = require('path');
+const semver = require('semver');
 
 async function run() {
   try {
@@ -34,13 +35,23 @@ async function run() {
       return;
     }
 
-    if (frontVer !== backVer) {
+    if (!frontVer || !backVer) {
       core.setFailed(
-        `VERSION MISMATCH: ${libName} is ${frontVer} in Frontend, but ${backVer} in Backend!`
+        `PRESENCE MISMATCH: ${libName} is defined in one project but missing in the other (Frontend: ${frontVer || 'None'}, Backend: ${backVer || 'None'}).`
+      );
+      return;
+    }
+
+    // Evaluate semantic compatibility (checking if version ranges intersect)
+    const areCompatible = semver.intersects(frontVer, backVer) || frontVer === backVer;
+
+    if (!areCompatible) {
+      core.setFailed(
+        `SEMVER MISMATCH: ${libName} versions/ranges do not overlap! Frontend has '${frontVer}', Backend has '${backVer}'.`
       );
     } else {
       core.info(
-        `Success: ${libName} is synchronized at version ${frontVer}.`
+        `Success: ${libName} versions are semantically compatible (${frontVer} and ${backVer}).`
       );
     }
   } catch (error) {
